@@ -1,4 +1,4 @@
-package com.doqtqu.pafa;
+package com.doqtqu.qrdodentapp;
 
 import java.io.Serializable;
 
