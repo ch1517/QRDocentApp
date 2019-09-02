@@ -20,9 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                 }
             }
-        // hashmap 개수만큼 포문 돌려서 addItem
         // Initializes list view adapter.
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
@@ -81,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         mServiceAdapter = new MainListAdapter(this,new ArrayList(artInfoList.keySet()));
         recyclerView.setAdapter(mServiceAdapter);
-        Log.d("1234",new ArrayList(artInfoList.keySet()).toString());
-
+        Log.d("second","D");
     }
 
     void arrCreate() {
@@ -93,12 +88,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject root = new JSONObject(str); // JSON 문서를 JSONObject 객체로 받는다.
             root = root.getJSONObject("ListExhibitionOfSeoulMOAService"); // result 구문에 있는 값을 get
-            int count = root.getInt("list_total_count");
             JSONArray ja = root.getJSONArray("row"); // result 구문에 있는 값을 get
 
             for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo = ja.getJSONObject(i);
-                ArtInfo arr = new ArtInfo(jo.getString("DP_NAME"), jo.getString("DP_SUBNAME"), jo.getString("DP_PLACE"), jo.getString("DP_START"), jo.getString("DP_END"),
+                ArtInfo arr = new ArtInfo(jo.getString("DP_SEQ"),jo.getString("DP_NAME"), jo.getString("DP_SUBNAME"), jo.getString("DP_PLACE"), jo.getString("DP_START"), jo.getString("DP_END"),
                         jo.getString("DP_HOMEPAGE"), jo.getString("DP_SPONSOR"), jo.getString("DP_VIEWTIME"), jo.getString("DP_VIEWCHARGE"), jo.getString("DP_ART_PART"),
                         jo.getString("DP_ART_CNT"), jo.getString("DP_ARTIST"), jo.getString("DP_DOCENT"), jo.getString("DP_VIEWPOINT"), jo.getString("DP_MASTER"),
                         jo.getString("DP_PHONE"), jo.getString("DP_INFO"), jo.getString("DP_MAIN_IMG"));
@@ -173,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MainListAdapter.MainViewHolder holder, int position) {
             holder.onBind(arrayList.get(position));
-            Log.d("position",position+"");
         }
 
         @Override

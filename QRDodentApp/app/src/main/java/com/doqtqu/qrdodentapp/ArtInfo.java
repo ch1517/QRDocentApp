@@ -3,6 +3,7 @@ package com.doqtqu.qrdodentapp;
 import java.io.Serializable;
 
 public class ArtInfo  implements Serializable {
+    String dp_seq; // 전시번호
     String dp_name; // 전시회명
     String dp_subname; // 전시부제
     String dp_place; // 장소
@@ -22,9 +23,10 @@ public class ArtInfo  implements Serializable {
     String dp_info; // 전시설명
     String dp_main_image; // 대표이미지
 
-    public ArtInfo(String dp_name, String dp_subname, String dp_place, String dp_start, String dp_end, String dp_homepage, String dp_sponsor, String dp_viewtime,
+    public ArtInfo(String dp_seq, String dp_name, String dp_subname, String dp_place, String dp_start, String dp_end, String dp_homepage, String dp_sponsor, String dp_viewtime,
                    String dp_viewcharge, String dp_art_part, String dp_art_cnt, String dp_artist, String dp_docent, String
                            dp_viewpoint, String dp_master, String dp_phone, String dp_info, String dp_main_image) {
+        this.dp_seq = dp_seq;
         this.dp_name = dp_name;
         this.dp_subname = dp_subname;
         this.dp_place = dp_place;
