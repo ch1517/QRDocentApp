@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             int count = root.getInt("list_total_count");
             JSONArray ja = root.getJSONArray("row"); // result 구문에 있는 값을 get
 
-            Log.d("ddddd", ja.length() + "");
             for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo = ja.getJSONObject(i);
                 ArtInfo arr = new ArtInfo(jo.getString("DP_NAME"), jo.getString("DP_SUBNAME"), jo.getString("DP_PLACE"), jo.getString("DP_START"), jo.getString("DP_END"),
