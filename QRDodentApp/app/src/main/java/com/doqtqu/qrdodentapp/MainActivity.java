@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         mServiceAdapter = new MainListAdapter(this,new ArrayList(artInfoList.keySet()));
         recyclerView.setAdapter(mServiceAdapter);
-        Log.d("second","D");
     }
 
     void arrCreate() {
