@@ -33,4 +33,5 @@ dependencies {
         exclude module: 'support-v4'
     }
     implementation 'org.jsoup:jsoup:1.10.2'
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
 }
