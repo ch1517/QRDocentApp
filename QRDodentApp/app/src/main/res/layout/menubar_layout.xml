@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <Button
+        android:id="@+id/menuBtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"
@@ -16,21 +17,21 @@
 
     <Button
         android:id="@+id/infoBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:text="전시정보"
+        android:background="@drawable/text"
         app:layout_constraintEnd_toStartOf="@+id/docentBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/docentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:text="음성안내"
+        android:background="@drawable/docent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

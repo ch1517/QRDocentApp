@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
         mServiceAdapter = new MainListAdapter(this,new ArrayList(artInfoList.keySet()));
         recyclerView.setAdapter(mServiceAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Button infoBtn = (Button)findViewById(R.id.infoBtn);
+        infoBtn.setVisibility(View.GONE);
+        Button docentBtn = (Button)findViewById(R.id.docentBtn);
+        docentBtn.setVisibility(View.GONE);
     }
 
     void arrCreate() {

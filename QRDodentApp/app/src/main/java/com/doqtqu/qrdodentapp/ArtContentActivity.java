@@ -38,6 +38,7 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -275,13 +276,16 @@ public class ArtContentActivity extends AppCompatActivity {
                 imageView = (ImageView) itemView.findViewById(R.id.list_image);
             }
 
-            void onBind(final String place_name) {
-                Log.d("place_name", place_name);
-                Glide.with(mContext).load(place_name).into(imageView);
+            void onBind(final String imageName) {
+                Log.d("place_name", imageName);
+                Glide.with(mContext).load(imageName).into(imageView);
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         // 이미지랑 텍스트 팝업으로 띄우기
+                        Intent intent = new Intent(view.getContext(), PopUpImageActivity.class);
+                        intent.putExtra("imageName",imageName);
+                        startActivity(intent);
                     }
                 });
             }
@@ -357,11 +361,14 @@ public class ArtContentActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull DocentListHolder holder, final int position) {
-            holder.onBind(imageName.get(position), docentStr.get(position).pr_title);
+            holder.onBind(imageName.get(position), docentStr.get(position).getPr_title());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), docentStr.get(position).pr_kor_sound,Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(view.getContext(), PopUpActivity.class);
+                    intent.putExtra("DocentInfo",docentStr.get(position));
+                    intent.putExtra("imageName",imageName.get(position));
+                    startActivity(intent);
                 }
             });
         }
@@ -376,15 +383,6 @@ public class ArtContentActivity extends AppCompatActivity {
             return imageName.size();
         }
     }
-    private class DocentInfo{
-        private String pr_title;
-        private String pr_kor_sound;
-        private String pr_text;
-        DocentInfo(String pr_title, String pr_kor_sound, String pr_text){
-            this.pr_title = pr_title;
-            this.pr_kor_sound = pr_kor_sound;
-            this.pr_text = pr_text;
-        }
-    }
+
 }
 

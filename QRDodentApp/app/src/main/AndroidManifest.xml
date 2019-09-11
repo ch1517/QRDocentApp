@@ -12,7 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ArtContentActivity"></activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/translate_right" />
+
+        <activity
+            android:name=".PopUpImageActivity"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".PopUpActivity"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity android:name=".ArtContentActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SecondActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
