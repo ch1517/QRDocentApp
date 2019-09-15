@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <item-->
+<!--        android:id="@+id/menu"-->
+<!--        android:icon="@drawable/menu"-->
+<!--        android:title="버튼1"-->
+<!--        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/action_btn2"
+        android:icon="@drawable/text"
+        android:title="버튼2"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_btn3"
+        android:icon="@drawable/docent"
+        android:text="action_btn3"
+        android:title="버튼3"
+        app:showAsAction="always" />
+</menu>

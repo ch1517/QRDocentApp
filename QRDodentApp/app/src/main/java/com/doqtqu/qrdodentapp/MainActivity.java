@@ -2,21 +2,32 @@ package com.doqtqu.qrdodentapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -44,12 +55,17 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 public class MainActivity extends AppCompatActivity {
     HashMap<String, ArrayList<ArtInfo>> artInfoList;
     private MainListAdapter mServiceAdapter;
+    private ListView lvNavList;
+    private FrameLayout flContainer;
+    private DrawerLayout dlDrawer;
+    private Button menubtn;
+    private ConstraintLayout drawLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        arrCreate();
+        artInfoList = new HashMap<String, ArrayList<ArtInfo>>();
         String dirPath = getFilesDir().getAbsolutePath();
         File file = new File(dirPath); // 일치하는 폴더가 없으면 생성
 
@@ -70,27 +86,106 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                 }
             }
+
+        Button home_menu = (Button)findViewById(R.id.home_menu);
+        home_menu.setOnClickListener(mClickListener);
         // Initializes list view adapter.
+        String[] navItems = {"서소문본관","북서울미술관", "남서울미술관","난지미술창작스튜디오","SeMA창고","백남준기념관","SeMA벙커"};
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        mServiceAdapter = new MainListAdapter(this,new ArrayList(artInfoList.keySet()));
+        mServiceAdapter = new MainListAdapter(this, new ArrayList(artInfoList.keySet()));
         recyclerView.setAdapter(mServiceAdapter);
+
+        lvNavList = (ListView) findViewById(R.id.lv_activity_main_nav_list);
+        drawLayout = (ConstraintLayout) findViewById(R.id.drawLayout);
+
+        flContainer = (FrameLayout) findViewById(R.id.fl_activity_main_container);
+        menubtn = (Button) findViewById(R.id.menuBtn);
+        menubtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlDrawer.openDrawer(drawLayout);
+            }
+        });
+
+        dlDrawer = (DrawerLayout) findViewById(R.id.dl_activity_main_drawer);
+
+        lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+        lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+
+        Button qrcodeBtn = (Button)findViewById(R.id.qrcodeBtn);
+        qrcodeBtn.setOnClickListener(mClickListener);
+    }
+    View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.home_menu:
+                    Intent intent = new Intent(v.getContext(), MainActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    finish();
+                    break;
+                case R.id.qrcodeBtn:
+                    Intent intent2 = new Intent(v.getContext(), QRCodeActivity.class);
+                    startActivity(intent2);
+                    overridePendingTransition(0, 0);
+                    break;
+            }
+        }
+    };
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+            Intent intent = new Intent(view.getContext(), ArtGalleryContentActivity.class);
+            switch (position) {
+                case 0:
+                    intent.putExtra("ArtGallery","서소문본관");
+                    break;
+                case 1:
+                    intent.putExtra("ArtGallery","북서울미술관");
+                    break;
+                case 2:
+                    intent.putExtra("ArtGallery","남서울미술관");
+                    break;
+                case 3:
+                    intent.putExtra("ArtGallery","난지미술창작스튜디오");
+                    break;
+                case 4:
+                    intent.putExtra("ArtGallery","SeMA창고");
+                    break;
+                case 5:
+                    intent.putExtra("ArtGallery","백남준기념관");
+                    break;
+                case 6:
+                    intent.putExtra("ArtGallery","SeMA벙커");
+                    break;
+            }
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            dlDrawer.closeDrawer(drawLayout);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (dlDrawer.isDrawerOpen(drawLayout)) {
+            dlDrawer.closeDrawer(drawLayout);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Button infoBtn = (Button)findViewById(R.id.infoBtn);
+        Button infoBtn = (Button) findViewById(R.id.infoBtn);
         infoBtn.setVisibility(View.GONE);
-        Button docentBtn = (Button)findViewById(R.id.docentBtn);
+        Button docentBtn = (Button) findViewById(R.id.docentBtn);
         docentBtn.setVisibility(View.GONE);
-    }
-
-    void arrCreate() {
-        artInfoList = new HashMap<String, ArrayList<ArtInfo>>();
     }
 
     void parseJson(String str) {
@@ -101,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo = ja.getJSONObject(i);
-                ArtInfo arr = new ArtInfo(jo.getString("DP_SEQ"),jo.getString("DP_NAME"), jo.getString("DP_SUBNAME"), jo.getString("DP_PLACE"), jo.getString("DP_START"), jo.getString("DP_END"),
+                ArtInfo arr = new ArtInfo(jo.getString("DP_SEQ"), jo.getString("DP_NAME"), jo.getString("DP_SUBNAME"), jo.getString("DP_PLACE"), jo.getString("DP_START"), jo.getString("DP_END"),
                         jo.getString("DP_HOMEPAGE"), jo.getString("DP_SPONSOR"), jo.getString("DP_VIEWTIME"), jo.getString("DP_VIEWCHARGE"), jo.getString("DP_ART_PART"),
                         jo.getString("DP_ART_CNT"), jo.getString("DP_ARTIST"), jo.getString("DP_DOCENT"), jo.getString("DP_VIEWPOINT"), jo.getString("DP_MASTER"),
                         jo.getString("DP_PHONE"), jo.getString("DP_INFO"), jo.getString("DP_MAIN_IMG"));
@@ -131,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace(); // 에러 메세지의 발생 근원지를 찾아서 단계별로 에러를 출력한다.
         }
     }
+
     private class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainViewHolder> {
         ArrayList<String> arrayList;
         private Context mContext = null;
@@ -153,13 +249,14 @@ public class MainActivity extends AppCompatActivity {
                 autoScrollViewPager.startAutoScroll(); //Auto Scroll 시작
                 autoScrollViewPager.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event){
+                    public boolean onTouch(View v, MotionEvent event) {
                         return true;
                     }
                 });
             }
         }
-        public MainListAdapter(Context mContext, ArrayList<String> arr){
+
+        public MainListAdapter(Context mContext, ArrayList<String> arr) {
             super();
             arrayList = arr;
             this.mContext = mContext;
@@ -168,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public MainListAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mainlist_item,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mainlist_item, parent, false);
             MainListAdapter.MainViewHolder viewHolder = new MainListAdapter.MainViewHolder(view);
             return viewHolder;
         }

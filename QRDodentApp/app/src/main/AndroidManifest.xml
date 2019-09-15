@@ -12,10 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/translate_right" />
+        <activity android:name=".QRCodeActivity"></activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA8DVL4KZyBmeYMQGDrversTTkekM8TZG4" />
+
+        <activity android:name=".GalleryPlaceActivity" />
+        <activity android:name=".ArtGalleryContentActivity" />
         <activity
             android:name=".PopUpImageActivity"
             android:theme="@android:style/Theme.Translucent" />
@@ -23,14 +27,15 @@
             android:name=".PopUpActivity"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".ArtContentActivity" />
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

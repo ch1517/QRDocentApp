@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
-    tools:context=".SplashActivity">
+    tools:context=".QRCodeActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

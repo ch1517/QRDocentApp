@@ -6,6 +6,18 @@
     android:layout_height="wrap_content">
 
     <Button
+        android:id="@+id/placeBtn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/place"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/infoBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
         android:id="@+id/menuBtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -22,6 +34,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/docentBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +45,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/docent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

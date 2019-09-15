@@ -56,7 +56,6 @@ public class ImageViewPagerAdapter extends PagerAdapter {
                 Intent intent = new Intent(context, ArtContentActivity.class);
                 intent.putExtra("artInfo",arrayList.get(position));
                 context.startActivity(intent);
-                Log.i("TAG", "This page was clicked: " + position);
             }
         });
         return v;

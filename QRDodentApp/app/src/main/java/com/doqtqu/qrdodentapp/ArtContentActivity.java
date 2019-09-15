@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class ArtContentActivity extends AppCompatActivity {
     private RecyclerView recyclerView2;
     private Button infoBtn;
     private Button docentBtn;
-    private ConstraintLayout mainInfo;
+    private ScrollView mainInfo;
     private ConstraintLayout displayInfo;
     private ConstraintLayout docentInfo;
     private int MODE_INFO = 0;
@@ -77,7 +78,7 @@ public class ArtContentActivity extends AppCompatActivity {
         docentBtn = (Button) findViewById(R.id.docentBtn);
         docentBtn.setOnClickListener(mClickListener);
 
-        mainInfo = (ConstraintLayout) findViewById(R.id.mainInfo);
+        mainInfo = (ScrollView) findViewById(R.id.mainInfo);
         displayInfo = (ConstraintLayout) findViewById(R.id.displayInfo);
         docentInfo = (ConstraintLayout) findViewById(R.id.docentInfo);
 
@@ -93,13 +94,18 @@ public class ArtContentActivity extends AppCompatActivity {
         TextView titleText = (TextView) findViewById(R.id.titleText);
         titleText.setText(artInfo.dp_name);
 
+        TextView subTitle = (TextView) findViewById(R.id.subTitle);
         if (!artInfo.dp_subname.equals("") && artInfo.dp_subname != null) {
-            TextView subTitle = (TextView) findViewById(R.id.subTitle);
             subTitle.setText("부제 : " + artInfo.dp_subname);
+        } else {
+            subTitle.setVisibility(View.GONE);
         }
 
         TextView artDate = (TextView) findViewById(R.id.dateText);
         artDate.setText("전시일정 : " + artInfo.dp_start + " ~ " + artInfo.dp_end);
+
+        TextView artistName = (TextView) findViewById(R.id.artistName);
+        artistName.setText("출품작가 : " + artInfo.dp_artist);
 
         TextView placeName = (TextView) findViewById(R.id.placeName);
         placeName.setText("위치 : " + artInfo.dp_place);
@@ -286,6 +292,7 @@ public class ArtContentActivity extends AppCompatActivity {
                         Intent intent = new Intent(view.getContext(), PopUpImageActivity.class);
                         intent.putExtra("imageName",imageName);
                         startActivity(intent);
+                        overridePendingTransition(0, 0);
                     }
                 });
             }
@@ -369,6 +376,7 @@ public class ArtContentActivity extends AppCompatActivity {
                     intent.putExtra("DocentInfo",docentStr.get(position));
                     intent.putExtra("imageName",imageName.get(position));
                     startActivity(intent);
+                    overridePendingTransition(0, 0);
                 }
             });
         }
