@@ -38,4 +38,7 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.android.support:appcompat-v7:28.1.1' // Version 23+ is Required
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+
 }
