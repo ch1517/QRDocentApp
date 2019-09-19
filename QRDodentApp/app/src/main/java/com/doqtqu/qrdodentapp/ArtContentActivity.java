@@ -212,6 +212,7 @@ public class ArtContentActivity extends AppCompatActivity {
             ArrayList<String> arr = new ArrayList<String>();
             try {
                 Document doc = Jsoup.connect("https://sema.seoul.go.kr/ex/exDetail/exVoice?exNo=" + artInfo.dp_seq).get();
+                Log.d("artInfo.dp_seq",artInfo.dp_seq);
                 Element con = doc.select(".slid_smPhoto.swiper-wrapper").first();
                 Elements contents = con.select("img");
 
@@ -224,7 +225,8 @@ public class ArtContentActivity extends AppCompatActivity {
                     String attr_href = contents2.get(count).attr("href");
                     parameta1 = attr_href.split("'")[1];
                     parameta2 = attr_href.split("'")[3];
-                    URL postUrl = new URL("http://sema.seoul.go.kr/ex/audio/getexaudoapiajax?glolangType=KOR&ex_id=" + parameta1 + "&pr_id=" + parameta2);
+                    Log.d("parameta", parameta1+" "+parameta2);
+                    URL postUrl = new URL("https://sema.seoul.go.kr/ex/audio/getexaudoapiajax?glolangType=KOR&ex_id=" + parameta1 + "&pr_id=" + parameta2);
                     URLConnection connection = postUrl.openConnection();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     String line;
@@ -309,7 +311,6 @@ public class ArtContentActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ImageListHolder holder, int position) {
             holder.onBind(imageName.get(position));
-            Log.d("position", holder.getAdapterPosition() + "");
 
         }
 

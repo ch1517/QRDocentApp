@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 public class PopUpActivity extends Activity {
-
+    private WebView webView=null;
+    private String qROK;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +26,12 @@ public class PopUpActivity extends Activity {
 
 
         Intent intent = getIntent();
+        qROK = intent.getStringExtra("QRCodeActivity");
         DocentInfo docentInfo = (DocentInfo)intent.getSerializableExtra("DocentInfo");
+        Log.d("docentInfoTitle",docentInfo.getPr_title());
         String imageName = intent.getStringExtra("imageName");
 
-        final WebView webView = (WebView)findViewById(R.id.webView);
+        webView = (WebView)findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true); // 자바스크립트 허용
         webView.loadUrl(docentInfo.getPr_kor_sound());
 
@@ -39,7 +42,7 @@ public class PopUpActivity extends Activity {
                 .into(imageView);
 
         TextView textView = (TextView)findViewById(R.id.scriptTxt);
-        textView.setText(docentInfo.getPr_text());
+        textView.setText(docentInfo.getPr_title()+"\n\n"+docentInfo.getPr_text());
         textView.setMovementMethod(new ScrollingMovementMethod());
         Log.d("docentMP3",docentInfo.getPr_kor_sound());
 
@@ -49,8 +52,23 @@ public class PopUpActivity extends Activity {
             public void onClick(View view) {
                 finish();
                 webView.destroy();
+                if(qROK!=null){
+                    QRCodeActivity qrCodeActivity =  (QRCodeActivity)QRCodeActivity.aRCodeActivity;
+                    qrCodeActivity.finish();
+                }
             }
         });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.destroy();
+        if(qROK!=null){
+           QRCodeActivity qrCodeActivity =  (QRCodeActivity)QRCodeActivity.aRCodeActivity;
+           qrCodeActivity.finish();
+        }
 
     }
 }

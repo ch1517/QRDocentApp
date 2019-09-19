@@ -2,23 +2,52 @@ package com.doqtqu.qrdodentapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class QRCodeActivity extends AppCompatActivity {
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
+public class QRCodeActivity extends AppCompatActivity {
+    public static QRCodeActivity aRCodeActivity;
+
+    private String dp_seq;
+    private String parameta1;
+    private String parameta2;
+    private String imageURL;
+
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
-
+        aRCodeActivity = QRCodeActivity.this;
+        context = this;
+        dp_seq = "316700";
+        parameta1 = "153";
+        parameta2 = "2364";
         new IntentIntegrator(this).initiateScan();
-
     }
+
+
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         //  com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE
         //  = 0x0000c0de; // Only use bottom 16 bits
@@ -28,12 +57,70 @@ public class QRCodeActivity extends AppCompatActivity {
                 // 취소됨
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                // 스캔된 QRCode --> result.getContents()
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                new DocentListTak().execute(this);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+    private class DocentListTak extends AsyncTask<Context, Void, DocentInfo> {
+        ProgressDialog asyncDialog = new ProgressDialog(QRCodeActivity.this);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("잠시만 기다려주세요...");
+            asyncDialog.show();
+        }
+
+        @Override
+        protected DocentInfo doInBackground(Context... contexts) {
+            DocentInfo docentInfo=null;
+            try {
+                    URL postUrl = new URL("https://sema.seoul.go.kr/ex/audio/getexaudoapiajax?glolangType=KOR&ex_id=" + parameta1 + "&pr_id=" + parameta2);
+                    URLConnection connection = postUrl.openConnection();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    StringBuffer response = new StringBuffer();
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response.append(line);
+                    }
+                docentInfo=parseJsonData(response.toString());
+
+            } catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.
+                e.printStackTrace();
+            }
+            return docentInfo;
+        }
+        DocentInfo parseJsonData(String str){
+            DocentInfo result = null;
+            try{
+                JSONObject jsonObject = new JSONObject(str);
+                JSONObject arr = jsonObject.getJSONArray("list").getJSONObject(0);
+                JSONObject imgArr = arr.getJSONArray("imgArr").getJSONObject(0);
+
+                result = new DocentInfo(arr.getString("pr_title"),arr.getString("pr_kor_sound"),arr.getString("pr_text"));
+                imageURL = imgArr.getString("img_img");
+                Log.d("imageURL",imageURL);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(DocentInfo d) {
+            super.onPostExecute(d);
+
+            Intent intent = new Intent(context, PopUpActivity.class);
+            intent.putExtra("DocentInfo",d);
+            intent.putExtra("imageName",imageURL);
+            intent.putExtra("QRCodeActivity","O");
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            asyncDialog.dismiss();
+        }
+
     }
 
 }
