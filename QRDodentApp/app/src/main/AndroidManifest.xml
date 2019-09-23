@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.doqtqu.qrdodentapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,6 +15,10 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".QRCodeActivity"></activity>
 
+        <activity android:name=".CaptureForm"></activity>
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA8DVL4KZyBmeYMQGDrversTTkekM8TZG4" />

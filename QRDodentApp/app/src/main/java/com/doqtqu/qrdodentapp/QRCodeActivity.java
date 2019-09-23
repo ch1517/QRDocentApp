@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class QRCodeActivity extends AppCompatActivity {
     public static QRCodeActivity aRCodeActivity;
-
+    private IntentIntegrator qrScan;
     private String dp_seq;
     private String parameta1;
     private String parameta2;
@@ -41,10 +41,14 @@ public class QRCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode);
         aRCodeActivity = QRCodeActivity.this;
         context = this;
-        dp_seq = "316700";
-        parameta1 = "153";
-        parameta2 = "2364";
-        new IntentIntegrator(this).initiateScan();
+//        "316700,153,2364" // dp_seq,parameta1,parameta2
+
+        qrScan = new IntentIntegrator(this);
+
+        qrScan.setCaptureActivity(CaptureForm.class);
+        qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
+        qrScan.setPrompt("");
+        qrScan.initiateScan();
     }
 
 
@@ -53,11 +57,21 @@ public class QRCodeActivity extends AppCompatActivity {
         //  = 0x0000c0de; // Only use bottom 16 bits
         if (requestCode == IntentIntegrator.REQUEST_CODE) {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            String[] result_parsing;
             if (result == null) {
                 // 취소됨
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                new DocentListTak().execute(this);
+                result_parsing = result.getContents().split(",");
+                if(result_parsing.length==3){
+                    dp_seq = result_parsing[0];
+                    parameta1 = result_parsing[1];
+                    parameta2 = result_parsing[2];
+                    new DocentListTak().execute(this);
+                } else {
+                    Toast.makeText(this, "올바르지 않은 코드입니다.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -88,7 +102,8 @@ public class QRCodeActivity extends AppCompatActivity {
                 docentInfo=parseJsonData(response.toString());
 
             } catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.
-                e.printStackTrace();
+                Toast.makeText(context, "올바르지 않은 코드입니다.", Toast.LENGTH_LONG).show();
+                finish();
             }
             return docentInfo;
         }
@@ -111,7 +126,6 @@ public class QRCodeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(DocentInfo d) {
             super.onPostExecute(d);
-
             Intent intent = new Intent(context, PopUpActivity.class);
             intent.putExtra("DocentInfo",d);
             intent.putExtra("imageName",imageURL);

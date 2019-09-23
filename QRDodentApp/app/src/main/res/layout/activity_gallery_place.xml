@@ -21,23 +21,24 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:context=".MapsActivity"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeName"
+        tools:context=".MapsActivity" />
 
     <TextView
         android:id="@+id/placeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:gravity="left"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <TextView
         android:id="@+id/address"
@@ -45,9 +46,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:gravity="left"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeName" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    <TextView
+        android:id="@+id/trafficInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="left"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address" />
 </androidx.constraintlayout.widget.ConstraintLayout>

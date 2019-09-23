@@ -15,8 +15,8 @@
 
         <WebView
             android:id="@+id/webView"
-            android:layout_width="50dp"
-            android:layout_height="35dp"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
