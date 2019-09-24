@@ -35,4 +35,10 @@ public class PopUpImageActivity extends Activity {
             }
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
 }

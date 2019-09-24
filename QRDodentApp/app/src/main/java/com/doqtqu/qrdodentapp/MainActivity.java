@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         Button home_menu = (Button)findViewById(R.id.home_menu);
-        home_menu.setOnClickListener(mClickListener);
+        home_menu.setOnClickListener(sClickListener);
         // Initializes list view adapter.
         String[] navItems = {"서소문본관","북서울미술관", "남서울미술관","난지미술창작스튜디오","SeMA창고","백남준기념관","SeMA벙커"};
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -117,16 +117,17 @@ public class MainActivity extends AppCompatActivity {
         lvNavList.setOnItemClickListener(new DrawerItemClickListener());
 
         Button qrcodeBtn = (Button)findViewById(R.id.qrcodeBtn);
-        qrcodeBtn.setOnClickListener(mClickListener);
+        qrcodeBtn.setOnClickListener(sClickListener);
     }
-    View.OnClickListener mClickListener = new View.OnClickListener() {
+    View.OnClickListener sClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.home_menu:
-                    Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    startActivity(intent);
                     overridePendingTransition(0, 0);
+                    Intent intent = new Intent(v.getContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                     break;
                 case R.id.qrcodeBtn:
@@ -137,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
