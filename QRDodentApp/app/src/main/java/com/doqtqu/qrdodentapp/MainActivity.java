@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 String loadPath = dirPath + "/" + str;
                 try {
                     FileInputStream fis = new FileInputStream(loadPath);
-                    BufferedReader bufferReader = new BufferedReader(new InputStreamReader(fis));
+                    BufferedReader bufferReader = new BufferedReader(new InputStreamReader(fis,"UTF-8"));
                     String content = "", temp = "";
                     while ((temp = bufferReader.readLine()) != null) {
                         content += temp;
@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     void parseJson(String str) {
         try {
+            Log.d("strstr",str);
             JSONObject root = new JSONObject(str); // JSON 문서를 JSONObject 객체로 받는다.
             root = root.getJSONObject("ListExhibitionOfSeoulMOAService"); // result 구문에 있는 값을 get
             JSONArray ja = root.getJSONArray("row"); // result 구문에 있는 값을 get

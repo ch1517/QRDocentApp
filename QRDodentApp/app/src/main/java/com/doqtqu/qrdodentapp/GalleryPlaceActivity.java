@@ -9,15 +9,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -50,34 +53,51 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
     private DrawerLayout dlDrawer;
     private Button menubtn;
     private ConstraintLayout drawLayout;
+
+    private Button introBtn;
+    private Button mapBtn;
+    private ImageView introImg;
+    private TextView introtextView;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_place);
 
+        context = this;
         Button infoBtn = (Button)findViewById(R.id.infoBtn) ;
         infoBtn.setVisibility(View.GONE);
         Button docentBtn = (Button)findViewById(R.id.docentBtn) ;
         docentBtn.setVisibility(View.GONE);
 
         arrayList = new HashMap<>();
-        arrayList.put("서소문본관",new GalleryInfo("서소문본관","서울특별시 중구 서소문동 덕수궁길 61", 37.564047, 126.973758, "ORG01"));
-        arrayList.put("북서울미술관",new GalleryInfo("북서울미술관","서울특별시 노원구 중계2.3동 동일로 1238", 37.640981, 127.066806,"ORG08"));
-        arrayList.put("남서울미술관",new GalleryInfo("남서울미술관","서울특별시 관악구 남현동 1059-13", 37.476226, 126.979424,"ORG03"));
-        arrayList.put("난지미술창작스튜디오",new GalleryInfo("난지미술창작스튜디오","서울특별시 마포구 상암동 하늘공원로 108-1", 37.569009, 126.878871,"ORG04"));
-        arrayList.put("SeMA창고",new GalleryInfo("SeMA창고","서울특별시 은평구 녹번동 산1-55",37.609430, 126.934259,"ORG11"));
-        arrayList.put("백남준기념관",new GalleryInfo("백남준기념관","서울특별시 종로구 창신동 종로53길 12-1", 37.573291, 127.013759,"ORG10"));
-        arrayList.put("SeMA벙커",new GalleryInfo("SeMA벙커","서울특별시 영등포구 여의도동 2-11", 37.525681, 126.924186,"ORG12"));
+        arrayList.put("서소문본관",new GalleryInfo("서소문본관","서울특별시 중구 서소문동 덕수궁길 61", 37.564047, 126.973758, "ORG01", "arthq"));
+        arrayList.put("북서울미술관",new GalleryInfo("북서울미술관","서울특별시 노원구 중계2.3동 동일로 1238", 37.640981, 127.066806,"ORG08", "northart"));
+        arrayList.put("남서울미술관",new GalleryInfo("남서울미술관","서울특별시 관악구 남현동 1059-13", 37.476226, 126.979424,"ORG03","southart"));
+        arrayList.put("난지미술창작스튜디오",new GalleryInfo("난지미술창작스튜디오","서울특별시 마포구 상암동 하늘공원로 108-1", 37.569009, 126.878871,"ORG04","nanjist"));
+        arrayList.put("SeMA창고",new GalleryInfo("SeMA창고","서울특별시 은평구 녹번동 산1-55",37.609430, 126.934259,"ORG11","smware"));
+        arrayList.put("백남준기념관",new GalleryInfo("백남준기념관","서울특별시 종로구 창신동 종로53길 12-1", 37.573291, 127.013759,"ORG10","mrbaekmemo"));
+        arrayList.put("SeMA벙커",new GalleryInfo("SeMA벙커","서울특별시 영등포구 여의도동 2-11", 37.525681, 126.924186,"ORG12","smbunker"));
 
         Intent intent = getIntent();
         addressTxt = (TextView)findViewById(R.id.address);
         placeTxt = (TextView)findViewById(R.id.placeName);
         trafficInfo = (TextView)findViewById(R.id.trafficInfo);
         placeNmae = intent.getStringExtra("placeName");
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         new PlaceInfoTask().execute();
+
+        introBtn = (Button)findViewById(R.id.introBtn);
+        introBtn.setOnClickListener(aClickListener);
+        mapBtn = (Button)findViewById(R.id.mapBtn);
+        mapBtn.setOnClickListener(aClickListener);
+
+        introImg = (ImageView)findViewById(R.id.introImg);
+        introtextView = (TextView)findViewById(R.id.introtextView);
+        introtextView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         Button home_menu = (Button)findViewById(R.id.home_menu);
         home_menu.setOnClickListener(sClickListener);
@@ -118,6 +138,24 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
                     Intent intent2 = new Intent(v.getContext(), QRCodeActivity.class);
                     startActivity(intent2);
                     overridePendingTransition(0, 0);
+                    break;
+            }
+        }
+    };
+
+    View.OnClickListener aClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ConstraintLayout introv = (ConstraintLayout)findViewById(R.id.introView);
+            ConstraintLayout mapv = (ConstraintLayout)findViewById(R.id.mapView);
+            switch (v.getId()) {
+                case R.id.mapBtn:
+                    mapv.setVisibility(View.VISIBLE);
+                    introv.setVisibility(View.GONE);
+                    break;
+                case R.id.introBtn:
+                    mapv.setVisibility(View.GONE);
+                    introv.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -190,7 +228,8 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
 
     }
     private class PlaceInfoTask extends AsyncTask {
-
+        private String imgUrl;
+        private String introText;
         Context mcontext;
         int dcount = 0;
         @Override
@@ -204,11 +243,13 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
             try {
                 Document doc = Jsoup.connect("https://sema.seoul.go.kr/it/getMap?museumCd=" + arrayList.get(placeNmae).extensionNum).get();
                 Element con = doc.select(".traffic_info").first();
-                Log.d("lengthlength",con.html());
                 str = con.html();
-//                for (Element content : contents) {
-//                    Log.d("concon",content.toString());
-//                }
+                Document imgDoc = Jsoup.connect("https://sema.seoul.go.kr/it/artinfo/"+arrayList.get(placeNmae).introNum+"/getIntro").get();
+                imgUrl = imgDoc.select(".imgexpend").attr("src");
+                introText = imgDoc.select(".tabBody_b0520_03").first().html();
+                Log.d("i am traffic",str);
+                Log.d("i am ground",introText);
+//                Log.d("i am ground","ddddd");
             } catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.
                 e.printStackTrace();
             }
@@ -218,7 +259,12 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+
             trafficInfo.setText(Html.fromHtml((String)o));
+            Glide.with(context).load("https://sema.seoul.go.kr/"+imgUrl).into(introImg);
+//            introText +="<style type='text/css'>ul{list-style: square;} li{list-style:none;}</style>";
+            introtextView.setText(Html.fromHtml(introText));
+
         }
     }
     class GalleryInfo {
@@ -227,12 +273,14 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
         private Double xCode;
         private Double YCode;
         private String extensionNum;
-        public GalleryInfo(String place_name, String address, Double xCode, Double YCode, String extensionNum) {
+        private String introNum;
+        public GalleryInfo(String place_name, String address, Double xCode, Double YCode, String extensionNum, String introNum) {
             this.place_name = place_name;
             this.address = address;
             this.xCode = xCode;
             this.YCode = YCode;
             this.extensionNum = extensionNum;
+            this.introNum = introNum;
         }
     }
 

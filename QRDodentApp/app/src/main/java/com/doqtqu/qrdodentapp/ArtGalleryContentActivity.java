@@ -59,6 +59,7 @@ public class ArtGalleryContentActivity extends AppCompatActivity {
     private DrawerLayout dlDrawer;
     private Button menubtn;
     private ConstraintLayout drawLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +175,7 @@ public class ArtGalleryContentActivity extends AppCompatActivity {
             }
         }
     };
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {

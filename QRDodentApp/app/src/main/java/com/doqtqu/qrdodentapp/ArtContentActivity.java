@@ -384,7 +384,6 @@ public class ArtContentActivity extends AppCompatActivity {
             }
 
             void onBind(final String imageName) {
-                Log.d("place_name", imageName);
                 Glide.with(mContext).load(imageName).into(imageView);
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
