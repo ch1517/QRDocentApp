@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dl_activity_main_drawer"
+    android:background="@color/colorWhite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -20,23 +21,43 @@
 
             <Button
                 android:id="@+id/introBtn"
+                android:text="전시장 정보"
+                android:background="@color/transparent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/mapBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/include" />
 
             <Button
                 android:id="@+id/mapBtn"
+                android:text="위치·교통 정보"
+                android:layout_marginEnd="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
+                android:background="@color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/introBtn"
                 app:layout_constraintTop_toBottomOf="@+id/include" />
+            <View
+                android:id="@+id/introhr"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:layout_marginStart="10dp"
+                android:background="@color/colorGray"
+                app:layout_constraintEnd_toStartOf="@+id/maphr"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/introBtn" />
+            <View
+                android:id="@+id/maphr"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="#ffffff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/introhr"
+                app:layout_constraintTop_toBottomOf="@+id/mapBtn" />
 
             <include
                 android:id="@+id/include"
@@ -54,7 +75,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/introBtn">
+                app:layout_constraintTop_toBottomOf="@+id/introhr">
+
+                <TextView
+                    android:id="@+id/placeName2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/introImg"
@@ -65,18 +101,19 @@
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/placeName2" />
 
                 <TextView
                     android:id="@+id/introtextView"
                     android:layout_width="match_parent"
-                    android:scrollbars="vertical"
-                    android:singleLine="false"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/introBtn">
+                app:layout_constraintTop_toBottomOf="@+id/introhr">
 
                 <fragment
                     android:id="@+id/map"
@@ -112,6 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="left"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp"

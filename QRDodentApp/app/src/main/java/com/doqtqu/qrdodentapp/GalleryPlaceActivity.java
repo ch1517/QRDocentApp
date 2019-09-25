@@ -83,6 +83,7 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
         addressTxt = (TextView)findViewById(R.id.address);
         placeTxt = (TextView)findViewById(R.id.placeName);
         trafficInfo = (TextView)findViewById(R.id.trafficInfo);
+        trafficInfo.setMovementMethod(ScrollingMovementMethod.getInstance());
         placeNmae = intent.getStringExtra("placeName");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -148,14 +149,20 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
         public void onClick(View v) {
             ConstraintLayout introv = (ConstraintLayout)findViewById(R.id.introView);
             ConstraintLayout mapv = (ConstraintLayout)findViewById(R.id.mapView);
+            View maphr = (View)findViewById(R.id.maphr);
+            View introhr = (View)findViewById(R.id.introhr);
             switch (v.getId()) {
                 case R.id.mapBtn:
                     mapv.setVisibility(View.VISIBLE);
                     introv.setVisibility(View.GONE);
+                    maphr.setBackgroundColor(getResources().getColor(R.color.colorGray));
+                    introhr.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     break;
                 case R.id.introBtn:
                     mapv.setVisibility(View.GONE);
                     introv.setVisibility(View.VISIBLE);
+                    maphr.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                    introhr.setBackgroundColor(getResources().getColor(R.color.colorGray));
                     break;
             }
         }
@@ -229,7 +236,7 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
     }
     private class PlaceInfoTask extends AsyncTask {
         private String imgUrl;
-        private String introText;
+        private String introText ="";
         Context mcontext;
         int dcount = 0;
         @Override
@@ -246,10 +253,24 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
                 str = con.html();
                 Document imgDoc = Jsoup.connect("https://sema.seoul.go.kr/it/artinfo/"+arrayList.get(placeNmae).introNum+"/getIntro").get();
                 imgUrl = imgDoc.select(".imgexpend").attr("src");
-                introText = imgDoc.select(".tabBody_b0520_03").first().html();
-                Log.d("i am traffic",str);
-                Log.d("i am ground",introText);
-//                Log.d("i am ground","ddddd");
+                Elements elements = imgDoc.select(".left_text.colboxs1 ul");
+                int c = 0;
+                for(Element e : elements){
+//                    String s = e.select("li").text();
+//                    introText += s+"<br>";
+                    for(Element t : e.select("li")){
+                        if(t.attr("class").equals("first")){
+                            Log.d("i am ttttt",t.text()+"\n");
+                            introText+="<span style='color:blue'; font-size:24pt;> <strong>✓ "+ t.text()+"</strong></span><br>";
+                        }else{
+                            introText+=t.text()+"<br>";
+                        }
+                    }
+                    introText+="<br>";
+                }
+                introText+="<br><br>";
+                Element element = imgDoc.select(".right_text.colboxs2").first();
+                introText += element.html();
             } catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.
                 e.printStackTrace();
             }
@@ -259,11 +280,12 @@ public class GalleryPlaceActivity extends AppCompatActivity implements OnMapRead
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-
             trafficInfo.setText(Html.fromHtml((String)o));
             Glide.with(context).load("https://sema.seoul.go.kr/"+imgUrl).into(introImg);
-//            introText +="<style type='text/css'>ul{list-style: square;} li{list-style:none;}</style>";
             introtextView.setText(Html.fromHtml(introText));
+
+            TextView placeTxt2 = (TextView)findViewById(R.id.placeName2);
+            placeTxt2.setText(placeNmae);
 
         }
     }
