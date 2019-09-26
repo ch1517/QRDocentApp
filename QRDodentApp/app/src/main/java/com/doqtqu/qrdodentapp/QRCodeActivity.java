@@ -60,16 +60,23 @@ public class QRCodeActivity extends AppCompatActivity {
             if (result == null) {
                 // 취소됨
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                finish();
             } else {
-                result_parsing = result.getContents().split(",");
-                if(result_parsing.length==2){
-                    parameta1 = result_parsing[0];
-                    parameta2 = result_parsing[1];
-                    new DocentListTak().execute(this);
-                } else {
+                if(result.getContents()==null||!result.getContents().contains(",")){
                     Toast.makeText(this, "올바르지 않은 코드입니다.", Toast.LENGTH_LONG).show();
                     finish();
+                } else{
+                    result_parsing = result.getContents().split(",");
+                    if(result_parsing.length==2){
+                        parameta1 = result_parsing[0];
+                        parameta2 = result_parsing[1];
+                        new DocentListTak().execute(this);
+                    } else {
+                        Toast.makeText(this, "올바르지 않은 코드입니다.", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 }
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -140,4 +147,5 @@ public class QRCodeActivity extends AppCompatActivity {
         super.onPause();
         overridePendingTransition(0,0);
     }
+
 }

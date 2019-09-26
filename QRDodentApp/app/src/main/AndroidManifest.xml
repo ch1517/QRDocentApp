@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".QRCodeActivity"></activity>
+        <activity android:name=".QRCodeActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".CaptureForm"></activity>
+        <activity android:name=".CaptureForm"
+            android:screenOrientation="portrait"></activity>
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation"/>
@@ -23,17 +25,23 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA8DVL4KZyBmeYMQGDrversTTkekM8TZG4" />
 
-        <activity android:name=".GalleryPlaceActivity" />
-        <activity android:name=".ArtGalleryContentActivity" />
+        <activity android:name=".GalleryPlaceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ArtGalleryContentActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopUpImageActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".PopUpActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".ArtContentActivity" />
+        <activity android:name=".ArtContentActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +49,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
