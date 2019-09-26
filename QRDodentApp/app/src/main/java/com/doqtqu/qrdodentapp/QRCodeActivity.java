@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class QRCodeActivity extends AppCompatActivity {
     public static QRCodeActivity aRCodeActivity;
     private IntentIntegrator qrScan;
-    private String dp_seq;
     private String parameta1;
     private String parameta2;
     private String imageURL;
@@ -41,7 +40,7 @@ public class QRCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode);
         aRCodeActivity = QRCodeActivity.this;
         context = this;
-//        "316700,153,2364" // dp_seq,parameta1,parameta2
+//        "316700,153,2364" // parameta1,parameta2
 
         qrScan = new IntentIntegrator(this);
 
@@ -63,10 +62,9 @@ public class QRCodeActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 result_parsing = result.getContents().split(",");
-                if(result_parsing.length==3){
-                    dp_seq = result_parsing[0];
-                    parameta1 = result_parsing[1];
-                    parameta2 = result_parsing[2];
+                if(result_parsing.length==2){
+                    parameta1 = result_parsing[0];
+                    parameta2 = result_parsing[1];
                     new DocentListTak().execute(this);
                 } else {
                     Toast.makeText(this, "올바르지 않은 코드입니다.", Toast.LENGTH_LONG).show();
